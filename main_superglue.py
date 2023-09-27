@@ -319,9 +319,9 @@ def main():
         
     action_model = ActionPredictor(d_model=768, num_actions=len(task_names))
 
-    #print ("Number of parameters for student {}".format(sum(p.numel() for p in student_model.parameters() if p.requires_grad)))
-    #print ("Number of parameters for teacher {}".format(sum(p.numel() for p in teacher_model.parameters() if p.requires_grad)))
-    #print ("Number of parameters for action model {}".format(sum(p.numel() for p in action_model.parameters() if p.requires_grad)))
+    print ("Number of parameters for student {}".format(sum(p.numel() for p in student_model.parameters() if p.requires_grad)))
+    print ("Number of parameters for teacher {}".format(sum(p.numel() for p in teacher_model.parameters() if p.requires_grad)))
+    print ("Number of parameters for action model {}".format(sum(p.numel() for p in action_model.parameters() if p.requires_grad)))
     
     if args.wandb_logging == True:
         config = vars(args)
