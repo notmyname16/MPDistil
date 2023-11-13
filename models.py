@@ -14,7 +14,7 @@ from torch.nn.modules.normalization import LayerNorm
 
 from copy import deepcopy as cp
 
-from load_bert import load_bert_model
+# from load_bert import load_bert_model
 
 class SequenceClassificationHead(nn.Module):
     def __init__(self, hidden_size, num_labels, dropout_p=0.1):
@@ -59,10 +59,10 @@ class FineTunedModel(torch.nn.Module):
 
         self.config = config
 
-        if tf_checkpoint is None:
-            self.encoder = AutoModel.from_pretrained(pretrained_model_name, config=config)
-        else:
-            self.encoder = load_bert_model(tf_checkpoint)
+        # if tf_checkpoint is None:
+        self.encoder = AutoModel.from_pretrained(pretrained_model_name, config=config)
+        # else:
+            # self.encoder = load_bert_model(tf_checkpoint)
 
         self.drop = nn.Dropout(dropout)
         

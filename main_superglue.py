@@ -17,7 +17,7 @@ from copy import deepcopy as cp
 
 from utils_superglue import (convert_examples_to_features,
                         output_modes, processors)
-from models import FineTunedModel, ActionPredictor, FineTunedTransformerModel
+from models import FineTunedModel, ActionPredictor
 from trainer_superglue import trainer
 
 import transformers
@@ -224,7 +224,7 @@ def main():
 
     parser.add_argument('--wandb_logging', action='store_true',
                         help='wandb logging needed')
-    parser.add_argument('--wandb_project_name', type=str, default='Superglue V4', required=False,
+    parser.add_argument('--wandb_project_name', type=str, default='Superglue demo run MPDistil', required=False,
                         help='wandb project name')
     
     args = parser.parse_args()
@@ -239,7 +239,8 @@ def main():
     # Set seed
     set_seed(args)
 
-    task_names = ['RTE','BOOLQ','CB','COPA','WIC','WSC']
+    # task_names = ['RTE','BOOLQ','CB','COPA','WIC','WSC']
+    task_names = ['CB']
     now = int(datetime.now().timestamp())
     args.timestamp = now
 
@@ -307,15 +308,10 @@ def main():
     if args.not_train_teacher == True:
         args.teacher_epochs = 0
 
-    if args.student_model != 'transformer':
-        student_model = FineTunedModel(task_names, label_nums, s_config, pretrained_model_name=args.teacher_model, \
+    student_model = FineTunedModel(task_names, label_nums, s_config, pretrained_model_name=args.teacher_model, \
                                    tf_checkpoint=args.student_tf_checkpoint)
     
-    else:
-        student_model = FineTunedTransformerModel(ntokens=t_config.vocab_size, emsize=args.emsize,\
-                                               nhid=args.nhid, nlayers=args.nlayers, tasks=task_names, \
-                                               label_nums=label_nums, pooling_method=args.pooling_method, \
-                                               encoder_version=args.encoder_version, nhead=8, dropout=0.1)
+
         
     action_model = ActionPredictor(d_model=768, num_actions=len(task_names))
 
