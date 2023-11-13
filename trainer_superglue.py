@@ -453,6 +453,7 @@ def trainer(args, teacher_model, student_model, action_model, task_loaders, labe
                 
                 ## extracting the pooled output from teacher and student
                 ## and feeding it to the feed forward meta teacher
+                ## obtain the hidden states from the teacher and student models as h(i,T) and h(i,S)
 
                 with torch.no_grad():
                     _, _, _, teacher_pooler_output = teacher_model(src=input_ids, \
@@ -462,23 +463,25 @@ def trainer(args, teacher_model, student_model, action_model, task_loaders, labe
                                                                 task_name=action.lower(),mask=attention_mask, token_type_ids=token_type_ids)
 
                 out = teacher_model2.forward(pooled_output=teacher_pooler_output, task_name=action.lower(), discriminator=True)
-                teacher_out = out[0]
+                teacher_out = out[0]   ## T'(h(i,T),Theta_T')
 
                 out = teacher_model2.forward(pooled_output=student_pooler_output, task_name=action.lower(), discriminator=True)
-                teacher_out2 = out[0]
+                teacher_out2 = out[0]  ## T'(h(i,S),Theta_T')
 
                 if args.use_comp_loss == False:
                     if action.lower() in ['sts-b']:
-                        teacher_loss = 0.5*nn.MSELoss()(teacher_out.view(-1), labels.view(-1)) + 0.5*nn.MSELoss()(teacher_out2.view(-1), labels.view(-1))  #F.mse_loss(labels.view(-1), student_out.view(-1))
+                        ## Equation 2 --> Regression
+                        teacher_loss = 0.5*nn.MSELoss()(teacher_out.view(-1), labels.view(-1)) + 0.5*nn.MSELoss()(teacher_out2.view(-1), labels.view(-1)) 
                     else:
-                        teacher_loss = 0.5*nn.CrossEntropyLoss()(teacher_out.view(-1, num_labels), labels.view(-1)) + 0.5*nn.CrossEntropyLoss()(teacher_out2.view(-1, num_labels), labels.view(-1)) #F.cross_entropy(student_out.view(-1, num_labels), labels.view(-1))
-                else:
-                    if action.lower() in ['sts-b']:
-                        teacher_loss2 = nn.MSELoss()(teacher_out.view(-1), labels.view(-1)) #+ nn.MSELoss()(teacher_out2.view(-1), labels.view(-1))  #F.mse_loss(labels.view(-1), student_out.view(-1))
-                    else:
-                        teacher_loss2 = nn.CrossEntropyLoss()(teacher_out.view(-1, num_labels), labels.view(-1)) #+ nn.CrossEntropyLoss()(teacher_out2.view(-1, num_labels), labels.view(-1)) #F.cross_entropy(student_out.view(-1, num_labels), labels.view(-1))
+                        ## Equation 2 --> Classification 
+                        teacher_loss = 0.5*nn.CrossEntropyLoss()(teacher_out.view(-1, num_labels), labels.view(-1)) + 0.5*nn.CrossEntropyLoss()(teacher_out2.view(-1, num_labels), labels.view(-1))
+                else: ## confirm
+                    if action.lower() in ['sts-b']:  
+                        teacher_loss2 = nn.MSELoss()(teacher_out.view(-1), labels.view(-1))
+                    else: 
+                        teacher_loss2 = nn.CrossEntropyLoss()(teacher_out.view(-1, num_labels), labels.view(-1)) 
 
-                    if action.lower() not in ['sts-b']:
+                    if action.lower() not in ['sts-b']: 
                         teacher_out = nn.Softmax(-1)(teacher_out).gather(dim=1,index=labels.long().view(-1,1)).squeeze()
                         teacher_out2 = nn.Softmax(-1)(teacher_out2).gather(dim=1,index=labels.long().view(-1,1)).squeeze()                
                     else:
@@ -537,9 +540,9 @@ def trainer(args, teacher_model, student_model, action_model, task_loaders, labe
 
     if args.local_rank in [-1, 0]: 
         for episode in range(args.num_episodes):
-            trajectory = []
-            batch_rewards = []
-            batch_states = []
+            trajectory = []      
+            batch_rewards = []  
+            batch_states = []   
             batch_actions = []
             held_dataloader_main = task_loaders[task_name]['held']['loader']
             held_dataset_main = task_loaders[task_name]['held']['dataset']
