@@ -15,7 +15,7 @@ Knowledge distillation (KD) is a technique used to transfer knowledge from a lar
 </p>
 
 <p align="center">
-<img width="640" alt="table 4" src="https://github.com/notmyname16/MPDistil/assets/88495622/53ed5df6-b7a8-406d-8ad1-d757bbdce845">
+<img width="640" alt="table 4" src="https://github.com/notmyname16/MPDistil/assets/88495622/6ebc8132-07c5-4ec9-bb28-c7b14e258e0b">
 </p>
 
 
