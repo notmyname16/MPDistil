@@ -8,6 +8,12 @@ Knowledge distillation (KD) is a technique used to transfer knowledge from a lar
   <img width="720" alt="methodology" src="https://github.com/notmyname16/MPDistil/assets/88495622/e9444194-08fd-43ad-880b-94232302f449">
 </p>
 
+## Results
+
+<img width="612" alt="table 1" src="https://github.com/notmyname16/MPDistil/assets/88495622/defec7c5-e7f1-40dc-a967-14d37e4b3367">
+<img width="582" alt="table 4" src="https://github.com/notmyname16/MPDistil/assets/88495622/53ed5df6-b7a8-406d-8ad1-d757bbdce845">
+
+
 ## How to run
 
 To run MPDistil with the collaborative teacher-student loss and binary reward formulation, run
