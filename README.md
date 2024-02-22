@@ -17,15 +17,12 @@ Dev accuracies with MPDistil with BERT-base teacher and BERT-6L student models o
 | Teacher | 75.3 | 83.9 | 63.0 | 67.1 | 57.1 | 64.4 |
 | Meta Teacher + Col Loss | 75.5 | 83.9 | 66.0 | 67.8 | 58.5 | 63.5 |
 | Meta Teacher + Com Loss | 75.5 | 83.9 | 63.0 | 67.8 | 57.2 | 61.5 |
-| ====        |   ====    |    ====    |    ====    |    ====   |    ====   |          ==== |
 | Student (Undistilled) | 71.6 | 75.0 | 53.0 | 64.6 | 56.0 | 63.5 |
 | Student (KD) | 73.0 | 80.4 | 54.0 | 66.4 | 57.7 | 64.4 |
-| ====        |   ====    |    ====    |    ====    |    ====   |    ====   |          ==== |
 | Student (MPDistil + Col Loss + Bin Reward) | 72.8 | 83.9 | 67.0 | 67.1 | 58.0 | 65.4 |
 | Student (MPDistil + Col Loss + Real Reward) | 73.4 | 82.1 | 70.0 | 66.4 | 58.6 | 64.4 |
 | Student (MPDistil + Com Loss + Bin Reward) | 73.0 | 80.4 | 62.0 | 67.5 | 59.6 | 65.4 |
 | Student (MPDistil + Com Loss + Real Reward) | 73.0 | 78.6 | 63.0 | 66.4 | 58.9 | 65.4 |
-| ====        |   ====    |    ====    |    ====    |    ====   |    ====   |          ==== |
 | Student (MPDistil + Col Loss - Curriculum) | 72.5 | 78.6 | 58.0 | 65.3 | 58.3 | 64.4 |
 | Student (MPDistil + Com Loss - Curriculum) | 72.3 | 76.8 | 59.0 | 65.3 | 58.0 | 63.5 |
 
